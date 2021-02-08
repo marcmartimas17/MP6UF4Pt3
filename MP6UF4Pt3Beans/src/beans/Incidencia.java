@@ -4,7 +4,10 @@ import java.beans.*;
 import java.io.FileInputStream;
 import java.io.Serializable;
 import java.util.Properties;
+import java.sql.Statement;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,8 +21,37 @@ public class Incidencia implements Serializable, VetoableChangeListener {
     private transient final VetoableChangeSupport vetoableChangeSupport = new VetoableChangeSupport(this);
     
     private Connection conn = null;
+    
     private String propsDb;
     public static final String PROP_PROPSDB = "propsDb";
+    
+    private String update;
+    public static final String PROP_UPDATE = "update";
+    
+    private String select;
+
+    public static final String PROP_SELECT = "select";
+
+    public String getSelect() {
+        return select;
+    }
+
+    public void setSelect(String select) throws PropertyVetoException {
+        String oldSelect = this.select;
+        vetoableChangeSupport.fireVetoableChange(PROP_SELECT, oldSelect, select);
+        this.select = select;
+    }
+
+    public String getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(String update) throws PropertyVetoException {
+        String oldUpdate = this.update;        
+        vetoableChangeSupport.fireVetoableChange(PROP_UPDATE, oldUpdate, update);
+        this.update = update;
+    }
+
 
     public String getPropsDb() {
         return propsDb;
@@ -30,7 +62,6 @@ public class Incidencia implements Serializable, VetoableChangeListener {
         vetoableChangeSupport.fireVetoableChange(PROP_PROPSDB, oldPropsDb, propsDb);
         this.propsDb = propsDb;
     }
-
     
     /* Constructors */  
     
@@ -59,7 +90,10 @@ public class Incidencia implements Serializable, VetoableChangeListener {
 
     @Override
     public void vetoableChange(PropertyChangeEvent ev) throws PropertyVetoException {
+        ResultSet rs = null;
+        
         switch (ev.getPropertyName()) {
+            
             case Incidencia.PROP_PROPSDB: 
                 Properties properties = new Properties ();
                 try {
@@ -69,21 +103,35 @@ public class Incidencia implements Serializable, VetoableChangeListener {
                     String contrasenya = properties.getProperty("contrasenya");
                     conn = DriverManager.getConnection(url, usuari, contrasenya);
                     System.out.println("Conectat en exit");
-                    JOptionPane.showMessageDialog(null, "Connexió establerta!!");
+                    
                 } catch (Exception ex) {
                     throw new PropertyVetoException("", ev);
-                }
-                finally {
-                    if (conn != null) try {
-                        conn.close();
-                    } 
-                    catch (Exception ex) {
-                        throw new PropertyVetoException("", ev);
-                    }
-                }                
+                }                             
                 
                 break;
+                
+            case Incidencia.PROP_UPDATE:
+                try {
+                    System.out.println((String)ev.getNewValue());
+                    Statement stmt = conn.createStatement();
+                    stmt.executeUpdate((String) ev.getNewValue());
+                } catch (Exception ex) {
+                    throw new PropertyVetoException("", ev);                  
+                }                
+            
+                break;
+                
+            case Incidencia.PROP_SELECT:
+                try {
+                    Statement stmt = conn.createStatement();
+                    stmt.executeQuery((String) ev.getNewValue());
+
+                } catch (Exception ex) {
+                    throw new PropertyVetoException("", ev);                  
+                }               
+
+                break;
+
         }
-    }
-    
+    } 
 }
