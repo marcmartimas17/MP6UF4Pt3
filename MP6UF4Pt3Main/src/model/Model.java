@@ -60,7 +60,9 @@ public class Model {
                 }
             } catch (SQLException ex) {
                 System.out.println("error");
-            }            
+            }
+            
+            connexio.setSelect("");
         
         } catch (PropertyVetoException ex) {
             System.out.println("S'ha perdut la connexió amb la base de dades");
@@ -68,6 +70,19 @@ public class Model {
         
         return llistaIncidencies;
         
+    }
+    
+    public void afegirIncidencia (String assumpte, String missatge, String prioritat) {
+        Incidencia incidencia = new Incidencia (0, assumpte, missatge, prioritat);
+        java.sql.Date dataSql = new java.sql.Date(incidencia.get5_dataCreacio().getTime());
+        String sql = "INSERT INTO incidencia (assumpte, missatge, prioritat, dataCreacio) VALUES ('" + assumpte + "', '" + missatge + "', '" + prioritat + "', '" + dataSql + "');";
+        try {
+            connexio.setUpdate(sql);
+        } catch (PropertyVetoException ex) {
+            System.out.println("error");
+        }
+        
+    
     }
     
 

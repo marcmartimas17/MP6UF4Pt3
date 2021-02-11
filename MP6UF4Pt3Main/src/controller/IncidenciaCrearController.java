@@ -22,6 +22,7 @@ public class IncidenciaCrearController {
     }
     
     public void iniciar () {
+        view.getTitolAfegir().setText("Afegir incidència");
         view.getAssumpteLabel().setText("Assumpte");
         view.getMissatgeLabel().setText("Missatge");
         view.getPrioritatLabel().setText("Prioritat");
@@ -41,6 +42,24 @@ public class IncidenciaCrearController {
         view.getBtnTornar().addActionListener(e -> {
             view.dispose();
             new IncidenciaPrincipalController(new IncidenciaPrincipal(), model);
+        });
+        
+        view.getBtnAfegir().addActionListener(e -> {
+            String assumpte = view.getAssumpteField().getText();
+            String missatge = view.getMissatgeField().getText();
+            String prioritat;
+            if (view.getPrioritatBox().getSelectedIndex() == 0) {
+                prioritat = "NORMAL";
+            }
+            else if (view.getPrioritatBox().getSelectedIndex() == 1) {
+                prioritat = "URGENT";
+            }
+            else {
+                prioritat = "BAIXA";
+            }
+            model.afegirIncidencia(assumpte, missatge, prioritat);
+            new IncidenciaPrincipalController(new IncidenciaPrincipal(), model);
+
         });
     }
 }

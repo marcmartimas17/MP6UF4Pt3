@@ -127,20 +127,22 @@ public class Connexio implements Serializable, VetoableChangeListener, PropertyC
                 try {
                     Statement stmt = conn.createStatement();
                     stmt.executeUpdate((String) ev.getNewValue());
-                } catch (Exception ex) {
+                } catch (SQLException ex) {
+                    System.out.println(ex);
                     throw new PropertyVetoException("", ev);                  
                 }                
             
                 break;
                 
             case PROP_SELECT:
-                try {
-                    Statement stmt = conn.createStatement();
-                    result = stmt.executeQuery((String) ev.getNewValue());
-
-                } catch (Exception ex) {
-                    throw new PropertyVetoException("", ev);                  
-                }               
+                if (!((String) ev.getNewValue()).equals("")) {
+                    try {
+                        Statement stmt = conn.createStatement();
+                        result = stmt.executeQuery((String) ev.getNewValue());
+                    } catch (Exception ex) {
+                        throw new PropertyVetoException("", ev);                  
+                    } 
+                }                              
 
                 break;
         }
