@@ -1,7 +1,11 @@
 package main;
 
 import beans.*;
+import controller.IncidenciaPrincipalController;
 import java.beans.PropertyVetoException;
+import model.Model;
+import views.*;
+
 /**
  *
  * @author Marc Martí Mas
@@ -10,30 +14,13 @@ import java.beans.PropertyVetoException;
 public class Main {
     public static void main(String[] args) {
         
-        String crearTaules = "CREATE TABLE IF NOT EXISTS incidencia (" +
-                    "id SERIAL PRIMARY KEY," + 
-                    "assumpte VARCHAR(250)," +
-                    "missatge TEXT," +
-                    "prioritat VARCHAR(250)," +
-                    "dataCreacio DATE" + 
-                    ");";
+        Model model = new Model ();
+        Connexio in = new Connexio ();
         
-        String select = "SELECT * FROM incidencies;";
+        model.connectarBaseDades();
+        model.crearTaules();        
         
-        Incidencia in = new Incidencia ();
-        
-        try {
-            in.setPropsDb ("config.properties");
-        } catch (PropertyVetoException ex) {
-            System.out.println("No s'ha pogut establir la connexió");
-        }
-        
-        try {
-            in.setUpdate(crearTaules);
-            System.out.println("Taula creada");
-        } catch (PropertyVetoException ex) {
-            System.out.println("No s'ha pogut establir la connexió");
-        }         
+        new IncidenciaPrincipalController(new IncidenciaPrincipal(), model);
         
     }
 }

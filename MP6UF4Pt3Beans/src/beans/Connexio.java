@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
  *
  * @author Marc Martí Mas
  */
-public class Incidencia implements Serializable, VetoableChangeListener {
+public class Connexio implements Serializable, VetoableChangeListener, PropertyChangeListener {
     
     /* Suports */
     private transient final PropertyChangeSupport propertySupport;
@@ -22,15 +22,30 @@ public class Incidencia implements Serializable, VetoableChangeListener {
     
     private Connection conn = null;
     
-    private String propsDb;
+    private transient String propsDb;
     public static final String PROP_PROPSDB = "propsDb";
     
-    private String update;
+    private transient String update;
     public static final String PROP_UPDATE = "update";
     
     private String select;
+    public transient static final String PROP_SELECT = "select";
+    
+    private ResultSet result;
+    
+    private boolean close;
+    public static final String PROP_CLOSE = "close";
 
-    public static final String PROP_SELECT = "select";
+    public boolean isClose() {
+        return close;
+    }
+
+    public void setClose(boolean close) {
+        boolean oldClose = this.close;
+        this.close = close;
+        propertySupport.firePropertyChange(PROP_CLOSE, oldClose, close);
+    }
+
 
     public String getSelect() {
         return select;
@@ -52,7 +67,6 @@ public class Incidencia implements Serializable, VetoableChangeListener {
         this.update = update;
     }
 
-
     public String getPropsDb() {
         return propsDb;
     }
@@ -65,7 +79,7 @@ public class Incidencia implements Serializable, VetoableChangeListener {
     
     /* Constructors */  
     
-    public Incidencia() {
+    public Connexio() {
         propertySupport = new PropertyChangeSupport(this);
         this.addVetoableChangeListener(this);
     }
@@ -94,7 +108,7 @@ public class Incidencia implements Serializable, VetoableChangeListener {
         
         switch (ev.getPropertyName()) {
             
-            case Incidencia.PROP_PROPSDB: 
+            case PROP_PROPSDB: 
                 Properties properties = new Properties ();
                 try {
                     properties.load(new FileInputStream((String) ev.getNewValue()));
@@ -102,7 +116,6 @@ public class Incidencia implements Serializable, VetoableChangeListener {
                     String usuari = properties.getProperty("usuari");
                     String contrasenya = properties.getProperty("contrasenya");
                     conn = DriverManager.getConnection(url, usuari, contrasenya);
-                    System.out.println("Conectat en exit");
                     
                 } catch (Exception ex) {
                     throw new PropertyVetoException("", ev);
@@ -110,9 +123,8 @@ public class Incidencia implements Serializable, VetoableChangeListener {
                 
                 break;
                 
-            case Incidencia.PROP_UPDATE:
+            case PROP_UPDATE:
                 try {
-                    System.out.println((String)ev.getNewValue());
                     Statement stmt = conn.createStatement();
                     stmt.executeUpdate((String) ev.getNewValue());
                 } catch (Exception ex) {
@@ -121,17 +133,40 @@ public class Incidencia implements Serializable, VetoableChangeListener {
             
                 break;
                 
-            case Incidencia.PROP_SELECT:
+            case PROP_SELECT:
                 try {
                     Statement stmt = conn.createStatement();
-                    stmt.executeQuery((String) ev.getNewValue());
+                    result = stmt.executeQuery((String) ev.getNewValue());
 
                 } catch (Exception ex) {
                     throw new PropertyVetoException("", ev);                  
                 }               
 
                 break;
-
         }
     } 
+
+    public ResultSet getResult() {
+        return result;
+    }
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent ev) {
+        switch (ev.getPropertyName()) {
+            // Tancar la connexió
+            case PROP_CLOSE:
+                if ((boolean) ev.getNewValue() && conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        
+                    }
+                    
+                }
+                
+            break;
+                
+        }
+
+    }
 }
