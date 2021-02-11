@@ -1,4 +1,4 @@
-package controller;
+package controllers;
 
 import beans.Connexio;
 import java.util.Collection;
@@ -6,6 +6,7 @@ import model.Model;
 import model.classes.Incidencia;
 import utilscontroller.Utils;
 import views.IncidenciaCrear;
+import views.IncidenciaEditar;
 import views.IncidenciaPrincipal;
 
 /**
@@ -40,6 +41,12 @@ public class IncidenciaPrincipalController {
         view.getBtnCrear().addActionListener( e-> {
             view.dispose();
             new IncidenciaCrearController(new IncidenciaCrear(), model);
+        });
+        
+        view.getBtnEditar().addActionListener( e -> {
+            view.dispose();
+            // TODO - Agafar la incidència de la taula i passar-la al controlador d'editar
+            //new IncidenciaEditarController(new IncidenciaEditar(), model, incidencia);
         });
     }
 

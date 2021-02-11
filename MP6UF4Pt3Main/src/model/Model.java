@@ -61,15 +61,14 @@ public class Model {
             } catch (SQLException ex) {
                 System.out.println("error");
             }
-            
+            // Per a que a la següent vegada que es faci el mateix seelct sigui diferent
             connexio.setSelect("");
         
         } catch (PropertyVetoException ex) {
             System.out.println("S'ha perdut la connexió amb la base de dades");
         }
         
-        return llistaIncidencies;
-        
+        return llistaIncidencies;        
     }
     
     public void afegirIncidencia (String assumpte, String missatge, String prioritat) {

@@ -1,6 +1,6 @@
 package main;
 
-import controller.IncidenciaPrincipalController;
+import controllers.IncidenciaPrincipalController;
 import model.Model;
 import views.*;
 
