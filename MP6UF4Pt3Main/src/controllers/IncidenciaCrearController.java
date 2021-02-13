@@ -30,9 +30,9 @@ public class IncidenciaCrearController {
         view.getAssumpteField().setText("");
         view.getMissatgeField().setText("");
         view.getPrioritatBox().removeAllItems();
-        view.getPrioritatBox().addItem("Normal");
-        view.getPrioritatBox().addItem("Urgent");
-        view.getPrioritatBox().addItem("Baixa");
+        view.getPrioritatBox().addItem("NORMAL");
+        view.getPrioritatBox().addItem("URGENT");
+        view.getPrioritatBox().addItem("BAIXA");
         view.getBtnTornar().setText("Tornar");
         
         view.setLocationRelativeTo(null);
@@ -58,6 +58,7 @@ public class IncidenciaCrearController {
                 prioritat = "BAIXA";
             }
             model.afegirIncidencia(assumpte, missatge, prioritat);
+            view.dispose();
             new IncidenciaPrincipalController(new IncidenciaPrincipal(), model);
 
         });

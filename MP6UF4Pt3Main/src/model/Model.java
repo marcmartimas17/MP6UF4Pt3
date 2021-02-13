@@ -44,7 +44,7 @@ public class Model {
     
     public Collection selectTotesIncidencies () {
         ResultSet rs = null;
-        
+        llistaIncidencies.clear();
         try {
             connexio.setSelect("SELECT * FROM incidencia;");
             rs = connexio.getResult();
@@ -61,7 +61,7 @@ public class Model {
             } catch (SQLException ex) {
                 System.out.println("error");
             }
-            // Per a que a la següent vegada que es faci el mateix seelct sigui diferent
+            // Per a que a la següent vegada que es faci el mateix select s'actualitzi
             connexio.setSelect("");
         
         } catch (PropertyVetoException ex) {
@@ -79,9 +79,18 @@ public class Model {
             connexio.setUpdate(sql);
         } catch (PropertyVetoException ex) {
             System.out.println("error");
-        }
-        
+        }    
+    }
     
+    public void editarIncidencia (int id, String assumpte, String missatge, String prioritat) {
+        Incidencia incidencia = new Incidencia (0, assumpte, missatge, prioritat);
+        java.sql.Date dataSql = new java.sql.Date(incidencia.get5_dataCreacio().getTime());
+        String sql = "UPDATE incidencia SET assumpte = '" + assumpte + "', missatge = '" + missatge + "', prioritat = '" + prioritat + "' WHERE id = " + id +";";
+        try {
+            connexio.setUpdate(sql);
+        } catch (PropertyVetoException ex) {
+            System.out.println("error");
+        }    
     }
     
 

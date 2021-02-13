@@ -27,12 +27,15 @@ public class IncidenciaEditarController {
         view.getMissatgeLabel().setText("Missatge");
         view.getPrioritatLabel().setText("Prioritat");
         view.getBtnEditar().setText("Editar");
-        view.getAssumpteField().setText("");
-        view.getMissatgeField().setText("");
         view.getPrioritatBox().removeAllItems();
-        view.getPrioritatBox().addItem("Normal");
-        view.getPrioritatBox().addItem("Urgent");
-        view.getPrioritatBox().addItem("Baixa");
+        view.getPrioritatBox().addItem("NORMAL");
+        view.getPrioritatBox().addItem("URGENT");
+        view.getPrioritatBox().addItem("BAIXA");
+        // Assignar valors als camps
+        view.getAssumpteField().setText(incidencia.get2_assumpte());
+        view.getMissatgeField().setText(incidencia.get3_missatge());
+        view.getPrioritatBox().setSelectedItem(incidencia.get4_prioritat()); 
+        
         view.getBtnTornar().setText("Tornar");        
         
         view.setLocationRelativeTo(null);
@@ -57,7 +60,8 @@ public class IncidenciaEditarController {
             else {
                 prioritat = "BAIXA";
             }
-            //model.editarIncidencia(id, assumpte, missatge, prioritat);
+            model.editarIncidencia(incidencia.get1_id(), assumpte, missatge, prioritat);
+            view.dispose();
             new IncidenciaPrincipalController(new IncidenciaPrincipal(), model);
 
         });

@@ -82,4 +82,10 @@ public class Incidencia implements Comparable <Incidencia>{
         return this._1_id - inc1.get1_id();
     }
     
+    public String toString () {
+        
+        return "Incidencia { id: " + _1_id + ", assumpte: " +_2_assumpte + ", missatge: " + _3_missatge + ", prioritat: " + _4_prioritat + "}";
+        
+    }
+    
 }
