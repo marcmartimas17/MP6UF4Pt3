@@ -65,6 +65,22 @@ public class IncidenciaPrincipalController {
                 JOptionPane.showMessageDialog(null, "Has de seleccionar una incidència!");
             }
         });
+        
+        view.getBtnEliminar().addActionListener( e-> {
+            agafarIncidencia();
+            if (incidenciaSelected != null) {
+                int input = JOptionPane.showConfirmDialog(null, "Estàs a punt d'esborrar una incidència. Vols continuar?", "Eliminar incidència",
+                JOptionPane.YES_NO_OPTION, JOptionPane.ERROR_MESSAGE);
+                if (input == 0) {
+                    model.eliminarIncidencia(incidenciaSelected.get1_id());
+                    actualitzarTaula();
+                }
+                
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Has de seleccionar una incidència!");
+            }
+        });
     }
     
     public void actualitzarTaula () {

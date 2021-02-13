@@ -93,5 +93,14 @@ public class Model {
         }    
     }
     
+    public void eliminarIncidencia (int id) {
+        String sql = "DELETE FROM incidencia WHERE id = " + id + ";";
+        try {
+            connexio.setUpdate(sql);
+        } catch (PropertyVetoException ex) {
+            System.out.println("error");
+        }    
+    }
+    
 
 }
