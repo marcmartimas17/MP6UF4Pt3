@@ -5,6 +5,7 @@ import java.beans.PropertyVetoException;
 import java.util.Collection;
 import java.sql.*;
 import java.util.TreeSet;
+import javax.swing.JOptionPane;
 import model.classes.Incidencia;
 
 /**
@@ -22,7 +23,7 @@ public class Model {
         try {
             connexio.setPropsDb (nomFitxerConfiguracio);
         } catch (PropertyVetoException ex) {
-            System.out.println("No s'ha pogut establir la connexió");
+            JOptionPane.showConfirmDialog(null, "No s'ha pogut establir la connexió amb la base de dades.", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -38,7 +39,7 @@ public class Model {
         try {
             connexio.setUpdate(crearTaules);
         } catch (PropertyVetoException ex) {
-            System.out.println("No s'ha pogut establir la connexió");
+            JOptionPane.showConfirmDialog(null, "S'ha perdut la connexió amb la Base de dades", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
         }  
     }
     
@@ -59,13 +60,13 @@ public class Model {
                     llistaIncidencies.add(incidencia);
                 }
             } catch (SQLException ex) {
-                System.out.println("error");
+                
             }
             // Per a que a la següent vegada que es faci el mateix select s'actualitzi
             connexio.setSelect("");
         
         } catch (PropertyVetoException ex) {
-            System.out.println("S'ha perdut la connexió amb la base de dades");
+            JOptionPane.showConfirmDialog(null, "S'ha perdut la connexió amb la Base de dades", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
         }
         
         return llistaIncidencies;        
@@ -78,7 +79,7 @@ public class Model {
         try {
             connexio.setUpdate(sql);
         } catch (PropertyVetoException ex) {
-            System.out.println("error");
+            JOptionPane.showConfirmDialog(null, "S'ha perdut la connexió amb la Base de dades", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
         }    
     }
     
@@ -89,7 +90,7 @@ public class Model {
         try {
             connexio.setUpdate(sql);
         } catch (PropertyVetoException ex) {
-            System.out.println("error");
+            JOptionPane.showConfirmDialog(null, "S'ha perdut la connexió amb la Base de dades", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
         }    
     }
     
@@ -98,7 +99,7 @@ public class Model {
         try {
             connexio.setUpdate(sql);
         } catch (PropertyVetoException ex) {
-            System.out.println("error");
+            JOptionPane.showConfirmDialog(null, "S'ha perdut la connexió amb la Base de dades", "ERROR", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
         }    
     }
     

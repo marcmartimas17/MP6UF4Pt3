@@ -128,7 +128,6 @@ public class Connexio implements Serializable, VetoableChangeListener, PropertyC
                     Statement stmt = conn.createStatement();
                     stmt.executeUpdate((String) ev.getNewValue());
                 } catch (SQLException ex) {
-                    System.out.println(ex);
                     throw new PropertyVetoException("", ev);                  
                 }                
             
@@ -162,12 +161,10 @@ public class Connexio implements Serializable, VetoableChangeListener, PropertyC
                         conn.close();
                     } catch (SQLException e) {
                         
-                    }
-                    
+                    }                    
                 }
                 
-            break;
-                
+                break;                
         }
 
     }
