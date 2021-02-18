@@ -103,5 +103,9 @@ public class Model {
         }    
     }
     
+    public void tancarPrograma () {
+        connexio.setClose(true);
+        System.exit(0);
+    }    
 
 }

@@ -1,6 +1,8 @@
 package controllers;
 
 import beans.Connexio;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Collection;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -79,6 +81,14 @@ public class IncidenciaPrincipalController {
             }
             else {
                 JOptionPane.showMessageDialog(null, "Has de seleccionar una incidència!");
+            }
+        });
+        
+        view.setDefaultCloseOperation(IncidenciaPrincipal.DO_NOTHING_ON_CLOSE);
+        view.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                model.tancarPrograma();
             }
         });
     }

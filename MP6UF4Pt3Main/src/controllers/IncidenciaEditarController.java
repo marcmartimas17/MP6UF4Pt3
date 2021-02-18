@@ -1,5 +1,7 @@
 package controllers;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import model.Model;
 import model.classes.Incidencia;
 import views.IncidenciaEditar;
@@ -64,6 +66,14 @@ public class IncidenciaEditarController {
             view.dispose();
             new IncidenciaPrincipalController(new IncidenciaPrincipal(), model);
 
+        });
+        
+        view.setDefaultCloseOperation(IncidenciaEditar.DO_NOTHING_ON_CLOSE);
+        view.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent event) {
+                model.tancarPrograma();
+            }
         });
     }
 }
